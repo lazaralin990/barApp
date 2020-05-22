@@ -8,22 +8,28 @@
             <p id="titleQuestion">Mi establecimiento</p>
 
             <div class="titulo">
-                <p>Nombre del establecimiento</p>
-                <input type="text" required class="titulo" formControlName="name">
+                <a>Nombre del establecimiento(*)</a>
+                <input type="text" required class="titulo" formControlName="name" maxlength = "60">
+                <div class="extraInfoDiv">
+                  <a class="extraInfo">max 60 caracteres</a>
+              </div>
             </div>
 
             <div class="titulo">
-                <p>Direccion</p>
-                <input type="text" required class="titulo" formControlName="direccion">
-            </div>
+                <a>Ciudad/Zona/Barrio(*)</a>
+                <input type="text" required class="titulo" formControlName="direccion" maxlength = "60">
+                <div class="extraInfoDiv">
+                  <a class="extraInfo">max 60 caracteres</a>
+                </div>
+              </div>
             <div class="titulo">
-                <p>Telefono</p>
-                <input type="text" required class="titulo" formControlName="telefono">
+                <a>Telefono(*)</a>
+                <input type="text" required class="titulo" formControlName="telefono" maxlength = "13">
             </div>
           </div>
 
           <div class="cartel">
-              <p>Foto del establecimiento</p>
+              <p>Foto del establecimiento(*)</p>
                 <img class="fotoEstablecimiento" *ngIf="imgSrc" [src]="imgSrc" width="150px" height="150px" margin-bottom="10px" (click)="fileUploader.click()">
                 <input type="file" aria-describedby="inputGroupFileAddon01" class="custom-file-input" formControlName="image" #fileUploader (change)="showPreview($event)">
                <div class="input-group-prepend">

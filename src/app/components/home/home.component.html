@@ -1,23 +1,35 @@
 <div class="full">
-    <li routerLinkActive="active" class="nav-item estLi">
-        <p class="text-muted text-right establecimiento" routerLink="/login">Soy un establecimiento</p>
-    </li>
   <div class="body">
+      <li routerLinkActive="active" class="nav-item estLi">
+          <p class="text-muted text-right establecimiento" routerLink="/login">Tengo un establecimiento</p>
+      </li>
     <div class="search">
-      <input type="text" placeholder="Escribe el nombre del bar..." class="form-control box" [(ngModel)]="searchTerm"/>
+        <div class="logoDiv">
+            <img class="logoImage" src="./assets/images/youcartalogo.png">
+        </div>
+      <input type="text" placeholder="Escribe el nombre del restaurante..." class="form-control box" [(ngModel)]="searchTerm"/>
+
       <div>
           <ul *ngIf="this.show" class="list-group">
             <li class="list-group-item results" *ngFor="let user of filteredList">
             <div class="name" (click)="viewCarta(user.uid)">
-              <div class="image">
                   <img [src]="user.image" class="profile">
-
-                  <a class="nameUser">{{user.name}}</a> <a class="address">{{user.direccion}}</a>
-              </div>
+                  <div class="text">
+                      <a class="nameUser">{{user.name}}</a>
+                      <a class="address">{{user.direccion}}</a>
+                  </div>
             </div>
             </li>
           </ul>
         </div>
     </div>
+  </div>
+  <div class="footer">
+    <a class="footerText">
+      With
+        <mat-icon class="iconProduct love" aria-hidden="false" aria-label="Example home icon">favorite_border</mat-icon>
+      from España &nbsp;</a>
+      <a class="contactarText">|</a>
+      <a class="contactarText" routerLink="/contacto">&nbsp;Contactar</a>
   </div>
 </div>

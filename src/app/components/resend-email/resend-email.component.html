@@ -1,0 +1,14 @@
+<div class="body">
+  <div class="centralDiv">
+      <p class="textCenter">El correo electronico no ha sido verificado</p>
+      <br>
+      <p class="textCenter">Si no has recibido ningún correo, haz click en "Volver a enviar" y si vuelve a pasar esto, haz click en salir y vuelve a conectarte.</p>
+      <button type="button" class="btn btn-info textCenter" [disabled]="isClicked" (click)="resend()">Volver a enviar</button>
+      <br><br>
+      <button type="button" class="btn btn-dark textCenter" (click)="disconnect()">Volver a conectarse</button>
+      <br><br>
+      <p class="textCenter">En caso de que sigas teniendo problemas, escríbenos a team@ritadivision.com</p>
+
+  </div>
+</div>
+

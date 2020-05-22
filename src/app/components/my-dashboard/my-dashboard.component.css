@@ -2,6 +2,7 @@
   display: block;
   width: 130px;
   height: 130px;
+  object-fit: cover;
   border-radius: 10%;
   margin-left: 5px;
   margin-top: 5px;
@@ -11,32 +12,27 @@
   float: left;
 }
 
+.buttonDots{
+  width: 24px;
+  height: 24px;
+}
+
 .name{
   display: table;
+  min-height: 130px;
+  padding-right: 5px;
 }
 .nameUser{
   float: left;
   margin-left: 5px;
   display: block;
-  line-height : 5px;
-  position: relative;
-}
-
-.user{
-display: block;
-min-width: 200px;
-max-width: 500px;
-width: 100%;
-margin-top: 50px;
-margin-left: 5px;
-}
+  position: relative;}
 
 .iconDotsProfile{
   float: left;
 }
 
 .dir{
-  display: block;
   min-width: 200px;
   max-width: 500px;
   width: 100%;
@@ -47,8 +43,8 @@ margin-left: 5px;
   display: block;
   color: lightslategrey;
   float: left;
+  font-size: 14px;
   margin-left: 5px;
-  line-height : 5px;
   position: relative;
 }
 
@@ -116,10 +112,6 @@ font-size: 15px;
 
 
 
-.categoryContainer{
-  vertical-align: middle;
-}
-
 .divCategory{
   width: 100%;
   height: 40px;
@@ -161,6 +153,17 @@ font-size: 15px;
   padding-top: 7px;
 }
 
+.imageDiv{
+  display: inline-table;
+  margin-top: 5px;
+  padding-left: 5px;
+}
+
+.iconPic{
+  font-size: 18px;
+  color: #1ECD1C;
+  cursor: pointer;
+}
 
 .createCat{
   background-color: white;
@@ -229,9 +232,10 @@ font-size: 15px;
 
 .divProducts{
 width: 100%;
+min-width: 40px;
 margin: 0px;
 text-align: left;
-float: left;
+height: auto;
 /* vertical-align: middle; */
 }
 
@@ -239,8 +243,8 @@ float: left;
   margin-top: 5px;
   padding-left: 10px;
   width: 80%;
-  float: left;
-}
+  height: auto;
+  display: inline-table;}
 
 .icondots{
   padding-top: 0px;
@@ -252,18 +256,15 @@ float: left;
 
 .textProducts{
   font-size: 15px;
-  line-height: 0%;
   vertical-align: middle;
 }
 
 .textProductsPrice{
   font-size: 15px;
-  line-height: 0%;
 }
 
 .textDescription{
   font-size: 13px;
-  line-height: 0%;
   vertical-align: middle;
   display: inline-block;
 }
@@ -277,6 +278,8 @@ float: left;
   display: inline-block;
   margin-left: 5px;
   font-size: 30px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
 
@@ -385,11 +388,32 @@ float: left;
   display: inline-block;
 }
 
+.priceInput{
+  width: 92px;
+  margin-top: 30px;
+  display: inline-block;
+}
+.priceDiv{
+  width: 100%;
+  text-align: left;
+  float:left;
+}
+
+.euro{
+  vertical-align: middle;
+  margin-left: 3px;
+  font-size: 30px;
+  color: lightslategray;
+}
+
   .buttonPopUp{
     margin-top: 10px;
     margin-bottom: 15px;
   }
 
+.validationPrice{
+  color: red;
+}
 
     header {
       position: absolute;
@@ -451,4 +475,50 @@ float: left;
     cursor: pointer;
   }
 
+  .shadowPic{
+    min-width: 300px;
+    min-height: 100px;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0.3;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    position: fixed;
+    padding:0;
+    margin:0;
+    top:0;
+    left:0;
+  }
+  .clearPic{
+    float: right;
+    margin-top: 15px;
+    margin-right: 15px;
+    color: beige;
+    z-index: 4;
+    position: fixed;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+  }
+  .image{
+    min-width: 320px;
+    max-width: 600px;
+    min-height: 100px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    background-color: white;
+    z-index: 4;
+    margin: auto;
+    text-align: center;
+    justify-content: center;
+    vertical-align: middle;
+  }
 
+  .extraInfo{
+    float: left;
+    font-size: 12px;
+    margin-left: 5px;
+  }

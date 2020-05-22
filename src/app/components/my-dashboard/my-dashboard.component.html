@@ -4,29 +4,21 @@
     <div class="pic">
        <img *ngIf="this.image" [src]="this.image" class="profile">
     </div>
-    <div class="name">
-      <div class="user">
-          <p class="nameUser">{{name}}</p>
-      </div>
-      <div class="dir">
-          <p class="address">{{direccion}}</p>
-      </div>
 
-        <div class="icons">
-            <div class="dotsProfile">
-
-                <div class="iconDotsProfile">
-                    <div ngbDropdown class="d-inline-block">
-                        <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                 <mat-icon aria-hidden="false" aria-label="Example home icon" class="dotsProfileIcon">more_vert</mat-icon>
-                        </button>
-                        <div class="dropdown-menu optionsDiv" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item option" (click)="editButtonClick(this.authService.userId)">Editar mi cuenta</a>
-                          <a class="dropdown-item option" (click)="onSignOut()">Desconectarme</a>
-                        </div>
-                      </div>
+    <div>
+        <div>
+            <div ngbDropdown class="d-inline-block">
+                  <mat-icon aria-hidden="false" id="dropdownMenuButton" data-toggle="dropdown" aria-label="Example home icon" class="dotsProfileIcon">more_vert</mat-icon>
+                <div class="dropdown-menu optionsDiv" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item option" (click)="editButtonClick(this.authService.userId)">Editar mi cuenta</a>
+                  <a class="dropdown-item option" (click)="onSignOut()">Desconectarme</a>
                 </div>
-            </div>
+              </div>
         </div>
+    </div>
+    <div class="name">
+          <a class="nameUser">{{name}}</a><br>
+          <a class="address">{{direccion}}</a>
     </div>
   </div>
 
@@ -49,7 +41,7 @@
             <div class="newCategory">
               <input type="text" required class="form-control formPopUp" formControlName="category" placeholder="Nueva categoría (*)">
               <input type="button" *ngIf="!editingCat" [disabled]="!formCat.valid" class="btn btn-success buttonPopUp" value="Guardar" (click)="onSubmitCat(formCat.value)">
-              <input type="button" *ngIf="editingCat" [disabled]="!formCat.valid" class="btn btn-success buttonPopUp" value="Guardar1" (click)="onSubmitEditCat(formCat.value)">
+              <input type="button" *ngIf="editingCat" [disabled]="!formCat.valid" class="btn btn-success buttonPopUp" value="Guardar Cambios" (click)="onSubmitEditCat(formCat.value)">
             </div>
         </div>
     </div>
@@ -67,7 +59,7 @@
   <!-- All Categories  -->
 
       <div class="categoriesAll">
-    <li class="list-group-item categoryContainer" *ngFor="let cat of categoryList">
+    <li class="list-group-item" *ngFor="let cat of categoryList">
       <div class="divCategory">
         <div class="icondotsCategory">
             <div ngbDropdown class="d-inline-block">
@@ -97,10 +89,20 @@
 
           <ng-container class="list-group-item" *ngFor="let prod of productListPerCat">
             <ng-container *ngIf="prod.categoryId === cat.id">
-              <li class="list-group-item fieldProducts">
+              <li class="list-group-item">
                 <div class="divProducts">
                     <div class="textPro">
                               <a class="textProducts">{{prod.title}}</a> <a>&nbsp;</a> <a class="textProductsPrice">{{prod.price}}€</a>
+                              <div class="imageDiv" *ngIf="prod.image">
+                                  <mat-icon aria-hidden="false" aria-label="Example home icon" class="iconPic" (click)="openPicture(prod)">photo</mat-icon>
+                              </div>
+                              <div *ngIf="isPictureOpen" class="popUpImage">
+                                  <div class="shadowPic" (click)="closePicture()"></div>
+                                  <mat-icon aria-hidden="false" aria-label="Example home icon" class="clearPic" (click)="closePicture()">clear</mat-icon>
+                                  <div class="imageDiv">
+                                      <img class="image" [src]=pictureSelected.image>
+                                    </div>
+                                </div>
                         <div class="textDescDiv">
                         <p class="textDescription">{{prod.description}}</p>
                         </div>
@@ -132,11 +134,19 @@
               <mat-icon aria-hidden="false" aria-label="Example home icon" class="salir" (click)="unselectProductMore(cat)">clear</mat-icon>
               <div class="newCategory">
                     <input type="hidden" formControlName="category">
-                    <input type="text"  required class="form-control formPopUp" formControlName="title" id="title" placeholder="Nombre (*)">
+                    <input type="text"  required class="form-control formPopUp" formControlName="title" id="title" placeholder="Nombre (*)" maxlength = "40">
+                    <a class="extraInfo">max 40 caracteres</a>
                     <div class="text-danger" *ngIf="isSubmitted && formsControls.title.errors?.required">Este campo es obligatorio</div>
 
-                    <input type="text" class="form-control formPopUp" formControlName="description" placeholder="Descripción (opcional)">
-                    <input type="number" required class="form-control formPopUp" formControlName="price" placeholder="Precio (*)">
+                    <input type="text" class="form-control formPopUp" formControlName="description" placeholder="Descripción (opcional)" maxlength = "150">
+                    <a class="extraInfo">max 150 caracteres</a>
+                    <div class="priceDiv">
+                    <input type="text" required class="form-control priceInput" formControlName="price" placeholder="Precio (*)" maxlength="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                      <a class="euro">€</a>
+                      <div *ngIf="formsControls.price.errors?.pattern"><a class="validationPrice">Ups! No escriba € ni letras</a></div>
+
+                      <!-- https://gist.github.com/ahmeti/5ca97ec41f6a48ef699ee6606560d1f7w  -->
+                    </div>
                     <div class="text-danger" *ngIf="isSubmitted && formsControls.price.errors?.required">Este campo es obligatorio</div>
                     <div class="divPicProduct">
                           <img class="picProduct" [hidden]="!uploadedPic" *ngIf="imgSrc" [src]="imgSrc" width="50px" height="50px" margin-bottom="10px" (click)="fileUploader.click()">
@@ -147,7 +157,7 @@
                           </div>
                     </div>
                     <input type="button" *ngIf="!editingProd" class="btn btn-success buttonPopUp" value="Guardar" (click)="onSubmit(formProduct.value, cat.id, cat.category)">
-                    <input type="button" *ngIf="editingProd" class="btn btn-success buttonPopUp" value="Guardar1" (click)="onSubmitEditProduct(formProduct.value, cat.id)">
+                    <input type="button" *ngIf="editingProd" class="btn btn-success buttonPopUp" value="Guardar Cambios" (click)="onSubmitEditProduct(formProduct.value, cat.id)">
               </div>
               </form>
           </div>

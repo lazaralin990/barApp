@@ -51,6 +51,9 @@ categoryTest: string;
 selectedCat: string;
 selectedProd: string;
 
+isPictureOpen: boolean;
+pictureSelected: Product;
+
 
 filteredList: Product[];
 name: string;
@@ -64,7 +67,7 @@ formProduct = new FormGroup({
   category: new FormControl(''),
   title: new FormControl('', Validators.required),
   description: new FormControl(''),
-  price: new FormControl('', Validators.required),
+  price: new FormControl('', [Validators.required, Validators.pattern("[0-9-,.]+")]),
   image: new FormControl('')
 });
 
@@ -93,6 +96,12 @@ openPopUpProduct(cat) {
 
 cancelOptionProduct() {
   this.popUpOpenProduct = false;
+  this.isSubmitted = false;
+  this.uploadedPic = false;
+  this.imgSrc = null;
+  this.editingProd = false;
+  this.selectedProd = null;
+  this.selectedImage = null;
 }
 
 
@@ -275,11 +284,12 @@ onEditCat(id){
   this.popUpOpen = true;
   this.editingCat = true;
   this.selectedCat = id;
-  this.product.getCat(id).valueChanges().subscribe(res => {
+  const sub = this.product.getCat(id).valueChanges().subscribe(res => {
     this.formCat.patchValue({
       $key: id,
       category: res.category
     });
+    sub.unsubscribe();
   });
 }
 
@@ -287,13 +297,14 @@ onSubmitEditCat(formValue){
   this.product.updateCat(this.selectedCat, formValue);
   this.cancelOption();
   this.formCat.reset();
+  formValue.reset();
 }
 
 onEditProduct(id, catId, cat) {
   this.openPopUpAddProduct(cat);
   this.editingProd = true;
   this.selectedProd = id;
-  this.product.getProduct(id, catId).valueChanges().subscribe(res => {
+  const prod = this.product.getProduct(id, catId).valueChanges().subscribe(res => {
     if (res.image != null ) {
       this.uploadedPic = true;
       this.imgSrc = res.image;
@@ -310,6 +321,7 @@ onEditProduct(id, catId, cat) {
         price: res.price,
       });
     }
+    prod.unsubscribe();
   });
 }
 
@@ -317,14 +329,13 @@ onSubmitEditProduct(formValue, catId){
   if(this.imgSrc === null){
     this.product.updateProduct(this.selectedProd, formValue, catId);
     this.cancelOptionProduct();
+    this.unselectProductMore(null);
+    this.formProduct.reset();
   } else if(this.oldImage === this.imgSrc) {
           formValue.image = this.imgSrc;
           this.product.updateProduct(this.selectedProd, formValue, catId);
-          this.formProduct.reset();
-          this.isSubmitted = false;
           this.cancelOptionProduct();
-          this.uploadedPic = false;
-          this.imgSrc = null;
+          this.formProduct.reset();
         } else {
 
           console.log(this.oldImage);
@@ -336,11 +347,8 @@ onSubmitEditProduct(formValue, catId){
               fileRef.getDownloadURL().subscribe((url) => {
                 formValue['image'] = url;
                 this.product.updateProduct(this.selectedProd, formValue, catId);
+                this.cancelOptionProduct();
                 this.formProduct.reset();
-                this.isSubmitted = false;
-                this.imgSrc = null;
-                this.uploadedPic = false;
-                this.selectedImage = null;
               });
             })
           ).subscribe();
@@ -382,11 +390,13 @@ openPopUpAddProduct(item){
   this.viewProductCat = item;
 }
 
-unselectProductMore(item ){
+unselectProductMore(item){
   this.viewProductCat = [];
   this.imgSrc = null;
   this.uploadedPic = false;
   this.selectedImage = null;
+  this.editingProd = false;
+  this.formProduct.reset();
  // this.makeViewMore(null)
 }
 
@@ -398,6 +408,14 @@ editButtonClick(id){
   this.router.navigate(['editar/', id]);
 }
 
+openPicture(prod){
+  this.pictureSelected = prod;
+  this.isPictureOpen = true;
+}
+closePicture(){
+  this.isPictureOpen = false;
+  this.pictureSelected = null;
+}
 
 
 get formsControls() {
@@ -407,5 +425,7 @@ get formsControls() {
 get formsControlsCat() {
   return this.formCat['controls'];
 }
+
+
 
 }

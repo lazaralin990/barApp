@@ -3,22 +3,31 @@
     height: 100%;
     min-width: 100%;
     width: 100%;
-    /* background-image: url("src/assets/images/869.jpg"); */
-    background-repeat: no-repeat;
+    /* background-image: url("src/assets/images/869.jpg");
+    background-repeat: no-repeat; */
+  }
+
+  .logoDiv{
+    width: 100%;
+    text-align: center;
+  }
+
+  .logoImage{
+    width: 100px;
+    height: 100px;
   }
 
 .body{
-  height: 1000px;
+  height: 95%;
   width: 100%;
   text-align: center;
 }
 
 .search{
-  position: absolute;
-  width: 80%;
+  display: inline-block;
+  width: 90%;
   max-width: 600px;
-  top: 50%;
-  left: 10%;
+
 }
 
 .box{
@@ -37,42 +46,65 @@
 }
 .address{
   color: lightslategrey;
-  float: left;
   margin-left: 5px;
+  float: left;
+  font-size: 14px;
 }
 
 .profile{
-  display: inline-block;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
   border-radius: 10%;
   margin-left: 5px;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
   float: left;
+  position: relative;
 }
-.nameUser{
-  margin-left: 5px;
-  float: left;
-}
-
-.image{
-  float: left;
-}
-
 
 .text{
+  position: relative;
   margin-left: 5px;
-  float: left;
 }
 
-
-
 .results{
+}
 
+.nameUser{
+  display: table;
+  position: relative;
+  font-size: 14px;
+  margin-left: 47px;
+  padding-top: 0px;
 }
 
 .name{
-cursor: pointer;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+}
+
+.footer{
+width: 100%;
+height: 5%;
+background-color: #F2F2F2;
+vertical-align: middle;
+display: inline-table;
+padding-top: 2px;
+}
+
+.footerText{
+  margin-left: 15px;
+  display: inline-table;
+  color: lightslategrey;
+  vertical-align: middle;
+}
+.love{
+  display: inline-table;
+  vertical-align: middle;
+  color: #419a1c;
+}
+
+.contactarText{
+  color: lightslategrey;
+  cursor: pointer;
 }

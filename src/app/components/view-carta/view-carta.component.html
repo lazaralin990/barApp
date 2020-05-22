@@ -4,26 +4,25 @@
       <div class="pic">
          <img *ngIf="this.image" [src]="this.image" class="profile">
       </div>
+      <div>
+        <div>
+                <mat-icon aria-hidden="false" aria-label="Example home icon" class="dotsProfileIcon" routerLink="/home">arrow_back_ios</mat-icon>
+        </div>
+      </div>
       <div class="name">
-        <div class="user">
-            <p class="nameUser">{{name}}</p>
-        </div>
-        <div class="dir">
-            <p class="address">{{direccion}}</p>
-        </div>
+            <a class="nameUser">{{name}}</a><br>
+            <a class="address">{{direccion}}</a>
         <div class="icons">
-            <div class="dotsProfile">
 
-                <div class="iconDotsProfile">
-                        <mat-icon aria-hidden="false" aria-label="Example home icon" class="dotsProfileIcon" routerLink="/home">arrow_back_ios</mat-icon>
-                </div>
-                </div>
             </div>
     </div>
 
     <div class="middle">
         <div class="categoriesAll">
-      <li class="list-group-item categoryContainer" *ngFor="let cat of categoryList">
+      <ng-container *ngFor="let cat of categoryList">
+        <ng-container *ngIf="cat.numberProducts !== 0">
+
+      <li class="list-group-item categoryContainer">
         <div class="divCategory">
 
           <div class="categoryTitleDiv">
@@ -42,6 +41,7 @@
 
             <ng-container class="list-group-item" *ngFor="let prod of productListPerCat">
               <ng-container *ngIf="prod.categoryId === cat.id">
+
                 <li class="list-group-item">
                   <div class="divProducts">
                       <div class="textPro">
@@ -66,6 +66,7 @@
                       </div>
                   </div>
                 </li>
+
             </ng-container>
         </ng-container>
         </div>
@@ -75,26 +76,16 @@
 
 
        </li>
+      </ng-container>
+      </ng-container>
        <div class="textPrincipio" *ngIf="!categoryList || categoryList.length === 0">
           <div class="principioHeader">
-            <p>¿List@ para empezar? en 2 min tendrás tu carta en la nube</p>
-          </div>
-          <div class="pasosPrincipio">
-            <p>Pasos: </p>
-            <mat-icon class="iconProduct steps" aria-hidden="false" aria-label="Example home icon">looks_one</mat-icon>
-            <p>Haz click arriba en "+ Nueva Categoria" para crear las categorías, por ejemplo: Bebidas, Entrantes, Postres o cualquier otra</p>
-            <mat-icon class="iconProduct steps" aria-hidden="false" aria-label="Example home icon">looks_two</mat-icon>
-            <p>Crea productos dentro de las categorías creadas.</p>
-            <mat-icon class="iconProduct steps" aria-hidden="false" aria-label="Example home icon">looks_3</mat-icon>
+              <mat-icon aria-hidden="false" aria-label="Example home icon">hourglass_empty</mat-icon>
+            </div>
 
-            <p>Tu carta online está lista!</p>
-          </div>
-          <div class="principioFooter">
-            <p>Ten en cuenta que el cliente verá el menu de la misma forma que tú lo ves y en el mismo orden.
-            </p>
-          </div>
       </div>
-
-   </div>
   </div>
+</div>
+<div class="footer">
+
   </div>

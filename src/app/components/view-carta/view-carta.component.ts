@@ -44,14 +44,16 @@ export class ViewCartaComponent implements OnInit {
         this.productListPerCat = [];
         item.forEach(element => {
           var y = element;
-          this.categoryList.push(y as Category);
+          y.numberProducts = 0;
           var v = this.product.getProductsPerCategoryForUser(this.barId, element.id);
           v.valueChanges().subscribe(item => {
           item.forEach(elementProd => {
+            y.numberProducts += 1;
             var v = elementProd;
             this.productListPerCat.push(v as Product);
             });
           });
+          this.categoryList.push(y as Category);
         });
        });
 
@@ -69,6 +71,7 @@ export class ViewCartaComponent implements OnInit {
         console.log(this.name);
       });
   }
+
 
   selectViewMore(item, catId){
     this.viewMoreCat = item.category;

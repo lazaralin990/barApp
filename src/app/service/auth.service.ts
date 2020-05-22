@@ -57,7 +57,8 @@ export class AuthService {
     return this.afAuth.auth.createUserWithEmailAndPassword(signUpForm.email, signUpForm.password)
       .then((result) => {
         this.SendVerificationMail();
-        const message = `Verifica tu email. Hemos enviado un correo con un link de activación al correo electronico proporcionado. Por favor verifica tu bandeja de entrada y carpeta de correo no deseado.`;
+        const message = `Acabampos de enviar un correo con un link de activación
+        al correo electronico proporcionado. Verifica tu bandeja de entrada y carpeta de correo no deseado.`;
         alert(message);
 
         database().ref('users/' + result.user.uid).set({
@@ -68,7 +69,19 @@ export class AuthService {
         });
         this.router.navigate(['login']);
       }).catch((error) => {
-        window.alert(error.message)
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if(errorCode === 'auth/invalid-email'){
+          alert('El correo electronico no es válido');
+        } else if(errorCode === 'auth/weak-password'){
+          alert('La contraseña no es suficientemente segura');
+        } else if(errorCode === 'auth/email-already-in-use') {
+          alert('Ya hay alguien registrado con este correo electronico');
+        } else if(errorCode === 'auth/operation-not-allowed'){
+          alert('Algo ha ido mal. Contacta con team@ritadivision.com');
+        } else {
+          window.alert('Algo ha ido mal. Intentalo de nuevo mas tarde');
+        }
       });
   }
 
@@ -95,12 +108,24 @@ export class AuthService {
           this.isVerified = result.user.emailVerified;
           });
         } else {
-          alert('El correo electronico no está verificado.')
-        }
+        alert('Tienes que validar el correo electronico para poder acceder a la aplicación');
+      }
       this.getProfile(this.userId);
       })
       .catch((error) => {
-        window.alert(error.message)
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if(errorCode === 'auth/invalid-email'){
+          alert('El correo electronico no es válido!');
+        } else if(errorCode === 'auth/wrong-password') {
+          alert('La contraseña es incorrecta!');
+        } else if(errorCode === 'auth/user-not-found') {
+          alert('No hay ningún usuario con este correo electronico o la cuenta ha sido eliminada');
+        } else if(errorCode === 'auth/user-disabled'){
+          alert('Esta cuenta ha sido suspendida. Para reactivarla, contacte team@ritadivision.com')
+        } else {
+        window.alert(errorMessage);
+        }
       });
   }
 

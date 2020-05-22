@@ -1,7 +1,14 @@
+.body{
+  height: 100%;
+  width: 100%;
+  float: left;
+}
+
 .profile{
   display: block;
   width: 130px;
   height: 130px;
+  object-fit: cover;
   border-radius: 10%;
   margin-left: 5px;
   margin-top: 5px;
@@ -11,43 +18,41 @@
   float: left;
 }
 
+.pic{
+  display: inline;
+}
+
+.header{
+  min-width: 320px;
+  width: 100%;
+  float: left;
+}
+
 .name{
   display: table;
   min-height: 130px;
+  padding-right: 5px;
 }
 .nameUser{
   float: left;
   margin-left: 5px;
   display: block;
-  line-height : 5px;
   position: relative;
 }
 
-.user{
-display: block;
-min-width: 200px;
-max-width: 500px;
-width: 100%;
-margin-top: 50px;
-margin-left: 5px;
+
+
+.list-group-item{
+  height: auto;
 }
 
-
-
-.dir{
-  display: block;
-  min-width: 200px;
-  max-width: 500px;
-  width: 100%;
-  margin-left: 5px;
-}
 
 .address{
   display: block;
   color: lightslategrey;
   float: left;
+  font-size: 14px;
   margin-left: 5px;
-  line-height : 5px;
   position: relative;
 }
 
@@ -65,15 +70,7 @@ margin-left: 5px;
 }
 
 
-.pic{
-  display: inline;
-}
 
-.header{
-  min-width: 330px;
-  width: 100%;
-  float: left;
-}
 
 
 .categoryContainer{
@@ -142,7 +139,7 @@ margin-left: 5px;
 
 .categoriesAll{
   max-width: 600px;
-  width: 90%;
+  width: 95%;
   display: inline-block;
 }
 .middle{
@@ -182,10 +179,15 @@ margin-left: 5px;
   left:0;
 }
 
+.list-group-item{
+  padding-left: 7px;
+  padding-right: 7px;
+}
 
 .divProducts{
 width: 100%;
 min-height: 40px;
+height: auto;
 margin: 0px;
 text-align: left;
 /* vertical-align: middle; */
@@ -194,8 +196,9 @@ text-align: left;
 .textPro{
   margin-top: 5px;
   padding-left: 10px;
-  width: 80%;
-  float: left;
+  width: 88%;
+  height: auto;
+  display: inline-table;
 }
 
 .imageDiv{
@@ -207,18 +210,16 @@ text-align: left;
 .divPrice{
   margin-top: 5px;
   width: 10%;
-  float: right;
+  display: inline-table;
 }
 
 .textProducts{
   font-size: 15px;
-  line-height: 0%;
   vertical-align: middle;
 }
 
 .textProductsPrice{
   font-size: 15px;
-  line-height: 0%;
   vertical-align: middle;
   text-align: right;
   align-self: right;
@@ -226,7 +227,6 @@ text-align: left;
 
 .textDescription{
   font-size: 13px;
-  line-height: 0%;
   vertical-align: middle;
   display: inline-block;
 }
@@ -254,9 +254,10 @@ text-align: left;
 }
 .dotsProfileIcon{
   cursor: pointer;
+  margin-top: 10px;
   margin-left: 5px;
   font-size: 24px;
-  color: #1CA7CD;
+  color: lightslategray;
 }
 
 .shadow{
@@ -299,4 +300,17 @@ text-align: left;
   top: 5px;
   right: 5px;
   cursor: pointer;
+}
+
+.footer{
+  margin-top: 15%;
+  width: 100%;
+  text-align: center;
+  float: left;
+  position: absolute;
+}
+
+.logoImage{
+  width: 50px;
+  height: 50px;
 }

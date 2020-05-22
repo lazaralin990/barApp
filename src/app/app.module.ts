@@ -22,6 +22,8 @@ import { LoginComponent } from './components/login/login.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
+import { MatButtonModule, MatDialogModule } from '@angular/material';
+
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AuthService } from './service/auth.service';
@@ -35,6 +37,9 @@ import { MyDashboardComponent } from './components/my-dashboard/my-dashboard.com
 import { PopUpModule } from './components/pop-up-component-cat/pop-up-component-cat.module';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import { ViewCartaComponent } from './components/view-carta/view-carta.component';
+import { DialogTcComponent } from './components/dialog-tc/dialog-tc.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { ResendEmailComponent } from './components/resend-email/resend-email.component';
 
 
 @NgModule({
@@ -53,6 +58,9 @@ import { ViewCartaComponent } from './components/view-carta/view-carta.component
     MyDashboardComponent,
     EditProfileComponent,
     ViewCartaComponent,
+    DialogTcComponent,
+    ContactComponent,
+    ResendEmailComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,7 +74,9 @@ import { ViewCartaComponent } from './components/view-carta/view-carta.component
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     AngularFireStorageModule,
-    PopUpModule
+    PopUpModule,
+    MatButtonModule,
+    MatDialogModule
   ],
   providers: [
     AuthGuard,
@@ -74,6 +84,7 @@ import { ViewCartaComponent } from './components/view-carta/view-carta.component
     AngularFireDatabase
   ],
 
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [DialogTcComponent]
 })
 export class AppModule { }

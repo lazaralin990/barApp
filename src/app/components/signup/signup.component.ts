@@ -1,6 +1,10 @@
 import { AuthService } from './../../service/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogTcComponent } from 'src/app/components/dialog-tc/dialog-tc.component';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-signup',
@@ -17,7 +21,9 @@ export class SignupComponent implements OnInit {
 
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    public dialog: MatDialog,
+
   ) { }
 
   ngOnInit() {
@@ -31,6 +37,10 @@ export class SignupComponent implements OnInit {
   }
 
 openDialog(){
+  this.dialog.open(DialogTcComponent, {
+    width: 'auto',
+    height: 'auto'
+  });
 
 }
 get formsControls(){

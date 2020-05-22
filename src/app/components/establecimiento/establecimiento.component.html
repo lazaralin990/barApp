@@ -4,27 +4,31 @@
       <form [formGroup]="formTemplate">
         <div class="title">
           <p id="titleQuestion">Antes de empezar, cuentanos un poco sobre tu establecimiento</p>
-
+          <a class="info">Ten en cuenta que tus clientes te encontrarán por tu nombre y/o por la zona, barrio o ciudad.</a>
+          <br>
           <div class="titulo">
-              <p>Nombre del establecimiento</p>
-              <input type="text" required class="form-control titulo" formControlName="name">
+              <a>Nombre del establecimiento(*)</a>
+              <input type="text" required class="form-control titulo" formControlName="name" maxlength = "60">
+              <a class="extraInfo">max 60 caracteres</a>
               <div class="text-danger" *ngIf="isSubmitted && formsControls.name.errors?.required">Este campo es obligatorio</div>
-          </div>
+
+            </div>
 
           <div class="titulo">
-              <p>Direccion</p>
-              <input type="text" required class="form-control titulo" formControlName="direccion">
+              <a>Ciudad/Zona/Barrio(*)</a>
+              <input type="text" required class="form-control titulo" formControlName="direccion" maxlength = "60">
+              <a class="extraInfo">max 60 caracteres</a>
               <div class="text-danger" *ngIf="isSubmitted && formsControls.direccion.errors?.required">Este campo es obligatorio</div>
-          </div>
+            </div>
           <div class="titulo">
-              <p>Telefono</p>
-              <input type="text" required class="form-control titulo" formControlName="telefono">
+              <a>Telefono(*)</a>
+              <input type="number" required class="form-control titulo" formControlName="telefono" maxlength = "13">
               <div class="text-danger" *ngIf="isSubmitted && formsControls.telefono.errors?.required">Este campo es obligatorio</div>
           </div>
         </div>
 
         <div class="cartel">
-            <p>Sube una foto de tu local para que tus clientes lo reconozcan facilmente</p>
+            <p>Sube una foto de tu local para que tus clientes lo reconozcan facilmente(*)</p>
               <img [src]="imgSrc" width="150px" height="150px" margin-bottom="10px" (click)="fileUploader.click()"  >  <!--  it used to have: (click)="fileUploader.click()" -->
               <input type="file" required class="form-control" formControlName="image" #fileUploader (change)="showPreview($event)"> <!-- it used to have #fileUploader -->
               <div class="text-danger" *ngIf="isSubmitted && !uploadedPic">Este campo es obligatorio</div>
