@@ -10,7 +10,8 @@
             <div ngbDropdown class="d-inline-block">
                   <mat-icon aria-hidden="false" id="dropdownMenuButton" data-toggle="dropdown" aria-label="Example home icon" class="dotsProfileIcon">more_vert</mat-icon>
                 <div class="dropdown-menu optionsDiv" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item option" (click)="editButtonClick(this.authService.userId)">Editar mi cuenta</a>
+                  <a class="dropdown-item option" (click)="editButtonClick()">Editar mi cuenta</a>
+                  <a class="dropdown-item option" routerLink="/settings">Ajustes</a>
                   <a class="dropdown-item option" (click)="onSignOut()">Desconectarme</a>
                 </div>
               </div>
@@ -134,7 +135,7 @@
               <mat-icon aria-hidden="false" aria-label="Example home icon" class="salir" (click)="unselectProductMore(cat)">clear</mat-icon>
               <div class="newCategory">
                     <input type="hidden" formControlName="category">
-                    <input type="text"  required class="form-control formPopUp" formControlName="title" id="title" placeholder="Nombre (*)" maxlength = "40">
+                    <input type="text" required class="form-control formPopUp" formControlName="title" id="title" placeholder="Nombre (*)" maxlength = "40">
                     <a class="extraInfo">max 40 caracteres</a>
                     <div class="text-danger" *ngIf="isSubmitted && formsControls.title.errors?.required">Este campo es obligatorio</div>
 
@@ -144,10 +145,9 @@
                     <input type="text" required class="form-control priceInput" formControlName="price" placeholder="Precio (*)" maxlength="7" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                       <a class="euro">€</a>
                       <div *ngIf="formsControls.price.errors?.pattern"><a class="validationPrice">Ups! No escriba € ni letras</a></div>
-
-                      <!-- https://gist.github.com/ahmeti/5ca97ec41f6a48ef699ee6606560d1f7w  -->
                     </div>
                     <div class="text-danger" *ngIf="isSubmitted && formsControls.price.errors?.required">Este campo es obligatorio</div>
+
                     <div class="divPicProduct">
                           <img class="picProduct" [hidden]="!uploadedPic" *ngIf="imgSrc" [src]="imgSrc" width="50px" height="50px" margin-bottom="10px" (click)="fileUploader.click()">
                           <mat-icon [hidden]="!uploadedPic" aria-hidden="false" aria-label="Example home icon" class="removePic" (click)="removePic()">clear</mat-icon>
@@ -157,7 +157,7 @@
                           </div>
                     </div>
                     <input type="button" *ngIf="!editingProd" class="btn btn-success buttonPopUp" value="Guardar" (click)="onSubmit(formProduct.value, cat.id, cat.category)">
-                    <input type="button" *ngIf="editingProd" class="btn btn-success buttonPopUp" value="Guardar Cambios" (click)="onSubmitEditProduct(formProduct.value, cat.id)">
+                    <input type="button" [disabled]="formProduct.invalid" *ngIf="editingProd" class="btn btn-success buttonPopUp" value="Guardar Cambios" (click)="onSubmitEditProduct(formProduct.value, cat.id)">
               </div>
               </form>
           </div>

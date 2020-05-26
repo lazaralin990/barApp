@@ -32,12 +32,7 @@ export class ViewCartaComponent implements OnInit {
   this.activatedRoute.paramMap.subscribe(params => {
     this.barId = params.get('id');
     if(this.barId){
-
       this.getData(this.barId);
-
-
-      var z = this.product.getAllCategories(this.barId);
-
       var z = this.product.getAllCategories(this.barId);
       z.valueChanges().subscribe(item => {
         this.categoryList = [];
@@ -63,35 +58,30 @@ export class ViewCartaComponent implements OnInit {
   }
 
   getData(id) {
-    this.authService.getProfileForMyDashboard(id).subscribe(
+    this.authService.getProfileRestaurant(id).subscribe(
       res => {
         this.name = res.payload.val().name;
         this.image = res.payload.val().image;
         this.direccion = res.payload.val().direccion;
-        console.log(this.name);
       });
   }
 
 
-  selectViewMore(item, catId){
+  selectViewMore(item: any) {
     this.viewMoreCat = item.category;
   }
-
-  unselectViewMore(item){
+  unselectViewMore() {
     this.viewMoreCat = null;
-
-   // this.makeViewMore(null)
   }
-
-  makeViewMore(item) {
+  makeViewMore(item: any) {
     return this.viewMoreCat === item.category;
   }
 
-  openPicture(prod){
+  openPicture(prod: any) {
     this.pictureSelected = prod;
     this.isPictureOpen = true;
   }
-  closePicture(){
+  closePicture() {
     this.isPictureOpen = false;
     this.pictureSelected = null;
   }

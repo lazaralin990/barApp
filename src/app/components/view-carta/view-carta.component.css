@@ -196,7 +196,7 @@ text-align: left;
 .textPro{
   margin-top: 5px;
   padding-left: 10px;
-  width: 88%;
+  width: 83%;
   height: auto;
   display: inline-table;
 }
@@ -226,6 +226,7 @@ text-align: left;
 }
 
 .textDescription{
+  color: lightslategrey;
   font-size: 13px;
   vertical-align: middle;
   display: inline-block;

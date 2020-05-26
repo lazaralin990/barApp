@@ -13,6 +13,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ViewCartaComponent } from './components/view-carta/view-carta.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 const routes: Routes = [
   {path: '',  redirectTo: 'home', pathMatch: 'full' },
@@ -27,7 +28,8 @@ const routes: Routes = [
   {path: 'mydashboard', component: MyDashboardComponent, canActivate: [AuthGuard]},
   {path: 'editar/:id', component: EditProfileComponent, canActivate: [AuthGuard]},
   {path: 'view/:id', component: ViewCartaComponent},
-  {path: 'resend', component: ResendEmailComponent, canActivate: [AuthGuard]}
+  {path: 'resend', component: ResendEmailComponent, canActivate: [AuthGuard]},
+  {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

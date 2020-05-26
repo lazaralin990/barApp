@@ -28,8 +28,8 @@
           <div class="categoryTitleDiv">
             <a class="categoryTitle">{{cat.category}}</a>
           </div>
-      <mat-icon aria-hidden="false" aria-label="Example home icon" class="expand" *ngIf="!makeViewMore(cat)" (click)="selectViewMore(cat, cat.id)">expand_more</mat-icon>
-      <mat-icon aria-hidden="false" aria-label="Example home icon" class="expand" *ngIf="makeViewMore(cat)"  (click)="unselectViewMore(cat)">expand_less</mat-icon>
+      <mat-icon aria-hidden="false" aria-label="Example home icon" class="expand" *ngIf="!makeViewMore(cat)" (click)="selectViewMore(cat)">expand_more</mat-icon>
+      <mat-icon aria-hidden="false" aria-label="Example home icon" class="expand" *ngIf="makeViewMore(cat)"  (click)="unselectViewMore()">expand_less</mat-icon>
         </div>
 
 

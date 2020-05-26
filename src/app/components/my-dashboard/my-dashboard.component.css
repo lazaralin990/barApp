@@ -155,8 +155,9 @@ font-size: 15px;
 
 .imageDiv{
   display: inline-table;
-  margin-top: 5px;
+  padding-top: 5px;
   padding-left: 5px;
+  vertical-align: middle;
 }
 
 .iconPic{
@@ -240,7 +241,7 @@ height: auto;
 }
 
 .textPro{
-  margin-top: 5px;
+  margin-top: 0px;
   padding-left: 10px;
   width: 80%;
   height: auto;
@@ -248,7 +249,7 @@ height: auto;
 
 .icondots{
   padding-top: 0px;
-  width: 50px;
+  width: 10%;
   float: right;
   text-align: right;
 }
@@ -256,7 +257,6 @@ height: auto;
 
 .textProducts{
   font-size: 15px;
-  vertical-align: middle;
 }
 
 .textProductsPrice{
@@ -264,6 +264,7 @@ height: auto;
 }
 
 .textDescription{
+  color: lightslategrey;
   font-size: 13px;
   vertical-align: middle;
   display: inline-block;

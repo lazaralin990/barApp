@@ -1,7 +1,7 @@
 export interface User {
   direccion: string;
   email: string;
-  emailVerified: boolean;
+  //emailVerified: boolean;
   image: File;
   name: string;
   telefono: string;

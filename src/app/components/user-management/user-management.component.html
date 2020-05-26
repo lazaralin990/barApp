@@ -1,29 +1,30 @@
+<div class="body">
 <form [formGroup]="frmSetNewPassword" (ngSubmit)="onSubmit()">
     <h3 class="title is-5 has-text-black">
-      Set a new password
+      Cambia tu contraseña
     </h3>
-    <h4 class="subtitle is-6 has-text-grey">Please enter and confirm your new password</h4>
+    <h4 class="subtitle is-6 has-text-grey">Escriba su nueva contraseña</h4> <br>
     <div class="field">
-      <label class="label">Password: </label>
+      <label class="label">Nueva Contraseña: </label>
       <div class="control">
         <input class="input " type="password" name="password" formControlName="password">
       </div>
     </div>
     <div class="field">
-      <label class="label">Confirm Password: </label>
+      <br>
+      <label class="label">Confirmar Nueva Contraseña: </label>
       <div class="control">
         <input class="input " type="password" name="confirmPassword" formControlName="confirmPassword">
-       <div class="has-text-danger" >
-          Confirm password is required!
-        </div>
+        <br><br>
       </div>
     </div>
 
     <div class="field">
       <div class="control">
-        <button class="button is-fullwidth is-primary" type="submit" [disabled]="!frmSetNewPassword.valid">
-          <span>Reset</span>
+        <button class="btn btn-success" type="submit" [disabled]="!frmSetNewPassword.valid">
+          <span>Cambiar contraseña</span>
         </button>
       </div>
     </div>
   </form>
+</div>

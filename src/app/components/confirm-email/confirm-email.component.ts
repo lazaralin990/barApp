@@ -9,6 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfirmEmailComponent implements OnInit {
 
+successful: boolean;
+
   constructor(
     private afAuth: AngularFireAuth,
     private activatedRoute: ActivatedRoute,
@@ -16,14 +18,11 @@ export class ConfirmEmailComponent implements OnInit {
 
 ngOnInit(): void {
     const code = this.activatedRoute.snapshot.queryParams['oobCode'];
-
     this.afAuth.auth
       .applyActionCode(code)
       .then(() => {
-        // do something after successful verification
       })
       .catch(err => {
-        // show error message
       });
  }
 }

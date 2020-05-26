@@ -1,11 +1,12 @@
-import { Observable } from 'rxjs';
 import { User } from './../models/user';
 import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { database } from 'firebase/app';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
+import { AngularFirestore } from '@angular/fire/firestore';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,17 +18,14 @@ export class AuthService {
   userEmail: string;
   isVerified: boolean;
   profileObj: AngularFireObject<User>;
-  profileObj2: AngularFireObject<any>;
-  profileUser: Observable<any>;
   name: string;
   direccion: string;
-  apellido2: string;
   telefono: string;
   image: File;
-  sexo: string;
 
 
   constructor(
+    public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone, //NgZone to remove outside scope warning
@@ -57,20 +55,12 @@ export class AuthService {
     return this.afAuth.auth.createUserWithEmailAndPassword(signUpForm.email, signUpForm.password)
       .then((result) => {
         this.SendVerificationMail();
-        const message = `Acabampos de enviar un correo con un link de activación
-        al correo electronico proporcionado. Verifica tu bandeja de entrada y carpeta de correo no deseado.`;
+        const message = `Acabamos de enviar un email con el link de activación. Verifica tu bandeja de entrada y Spam`;
         alert(message);
-
-        database().ref('users/' + result.user.uid).set({
-          uid: result.user.uid,
-          email: result.user.email,
-          displayName: result.user.displayName,
-          emailVerified: result.user.emailVerified,
-        });
+        this.setUserData(result);
         this.router.navigate(['login']);
       }).catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
         if(errorCode === 'auth/invalid-email'){
           alert('El correo electronico no es válido');
         } else if(errorCode === 'auth/weak-password'){
@@ -80,13 +70,21 @@ export class AuthService {
         } else if(errorCode === 'auth/operation-not-allowed'){
           alert('Algo ha ido mal. Contacta con team@ritadivision.com');
         } else {
-          window.alert('Algo ha ido mal. Intentalo de nuevo mas tarde');
+          alert('Algo ha ido mal. Intentalo de nuevo mas tarde');
         }
       });
   }
 
+
+  setUserData(result){
+    database().ref('users/' + result.user.uid).set({
+      uid: result.user.uid,
+      email: result.user.email
+    });
+  }
+
   SendVerificationMail(){
-    return this.afAuth.auth.currentUser.sendEmailVerification()
+    return this.afAuth.auth.currentUser.sendEmailVerification();
   }
 
 
@@ -97,24 +95,25 @@ export class AuthService {
     );
   }
 
+
   SignIn(email, password) {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
      .then((result) => {
-      if (result.user.emailVerified){
+      firebase.auth().currentUser.reload();
+      if (result.user.emailVerified === true){
           this.isLoggedIn = true;
           this.ngZone.run(() => {
           this.userId = result.user.uid;
           this.userEmail = result.user.email;
           this.isVerified = result.user.emailVerified;
+          this.getProfile(this.userId);
           });
         } else {
-        alert('Tienes que validar el correo electronico para poder acceder a la aplicación');
+          this.router.navigate(['resend']);
       }
-      this.getProfile(this.userId);
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
         if(errorCode === 'auth/invalid-email'){
           alert('El correo electronico no es válido!');
         } else if(errorCode === 'auth/wrong-password') {
@@ -124,25 +123,27 @@ export class AuthService {
         } else if(errorCode === 'auth/user-disabled'){
           alert('Esta cuenta ha sido suspendida. Para reactivarla, contacte team@ritadivision.com')
         } else {
-        window.alert(errorMessage);
+          alert('Algo ha ido mal. Intentalo de nuevo mas tarde');
         }
       });
   }
 
 
+  editMyProfile() {
+    this.router.navigate(['editar/', this.userId]);
+  }
 
-
-  deleteProfile(id: string){
-    var profile = firebase.auth().currentUser;
+  deleteProfile(){
+    const profile = firebase.auth().currentUser;
     profile.delete();
+    this.SignOut();
     return this.profileObj.remove();
   }
 
 
   getProfile(id: string) {
       this.profileObj = this.af.object('users/' + id);
-      this.profileObj.snapshotChanges().subscribe(action =>{
-        this.image = action.payload.val().image;
+      this.profileObj.snapshotChanges().subscribe(action => {
         this.name = action.payload.val().name;
         if (this.name != null ) {
           this.router.navigate(['mydashboard']);
@@ -151,11 +152,15 @@ export class AuthService {
         }
   });
       return this.profileObj;
-
   }
 
 
-  getProfileForMyDashboard(id: string) {
+  getProfileForMyDashboard() {
+    this.profileObj = this.af.object('users/' + this.userId);
+    return this.profileObj.snapshotChanges();
+  }
+
+  getProfileRestaurant(id) {
     this.profileObj = this.af.object('users/' + id);
     return this.profileObj.snapshotChanges();
   }
@@ -163,25 +168,21 @@ export class AuthService {
   getProfileId(id: string){
     this.profileObj = this.af.object('users/' + id);
     return this.profileObj;
-
-    //return this.veladaEdit = this.storage.object('veladas/' + id).valueChanges();
   }
 
 
 
-updateProfile(id, profile: User) {
+updateProfile(profile: User) {
   this.profileObj.update({
-    uid: id,
     name: profile.name,
     direccion: profile.direccion,
-    email: profile.email,
-    emailVerified: profile.emailVerified,
     telefono: profile.telefono,
     image: profile.image
-
   });
   this.router.navigate(['mydashboard'])
-  .catch(error => {    this.errorMgmt(error); });
+  .catch(error => {
+    this.errorMgmt(error);
+  });
 }
 
 SignOut(){
@@ -197,7 +198,4 @@ SignOut(){
 private errorMgmt(error) {
   console.log(error);
 }
-
-
-
 }

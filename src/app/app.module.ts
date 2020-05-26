@@ -40,6 +40,7 @@ import { ViewCartaComponent } from './components/view-carta/view-carta.component
 import { DialogTcComponent } from './components/dialog-tc/dialog-tc.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { ResendEmailComponent } from './components/resend-email/resend-email.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { ResendEmailComponent } from './components/resend-email/resend-email.com
     DialogTcComponent,
     ContactComponent,
     ResendEmailComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,

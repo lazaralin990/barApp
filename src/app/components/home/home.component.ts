@@ -17,7 +17,6 @@ show: boolean;
 private _searchTerm: string;
 
   get searchTerm(): string {
-    console.log(this._searchTerm);
     return this._searchTerm;
   }
 

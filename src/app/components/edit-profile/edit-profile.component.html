@@ -37,30 +37,11 @@
                 </div>
               </div>
 
-            <input type="hidden" formControlName = "uid">
-
-
-            <input type="hidden"
-            formControlName = "email"
-            >
-
-            <input type="hidden"
-            formControlName = "emailVerified"
-            >
-
             <div class="crear">
               <button type="submit" [disabled]="!formTemplate.valid" class="btn btn-success btn-block guardarButton" (click)="onSubmitEdit(formTemplate.value)">Guardar Cambios</button>
             </div>
-
-
         </form>
       </div>
-      <!--
-      <div class="deleteDiv">
-          <button class="btn btn-danger eliminar" (click)="onDelete()">Eliminar mi cuenta</button>
-      </div>
-      -->
-
     </div>
   </div>
 

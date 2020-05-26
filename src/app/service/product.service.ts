@@ -30,14 +30,14 @@ getAll(){
   this.listAll = this.database.list('users/');
   return this.listAll;
 }
-
+/*
 getAllProducts(id){
   this.productsAll = this.database.list('users/' + id + '/carta');
   return this.productsAll;
 }
+*/
 
 getProductsPerCategory(id){
-  console.log(id);
   this.productsPerCat = this.database.list('users/' + this.authService.userId + '/carta/' + id + '/products/');
   return this.productsPerCat;
 }
@@ -49,6 +49,11 @@ getProductsPerCategoryForUser(idPlace, catId ){
 
 getAllCategories(id){
   this.categoryAll = this.database.list('users/' + id + '/carta');
+  return this.categoryAll;
+}
+
+getAllCategoriesForMyRestaurant(){
+  this.categoryAll = this.database.list('users/' + this.authService.userId + '/carta');
   return this.categoryAll;
 }
 
