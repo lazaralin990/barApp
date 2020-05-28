@@ -41,6 +41,7 @@ import { DialogTcComponent } from './components/dialog-tc/dialog-tc.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { ResendEmailComponent } from './components/resend-email/resend-email.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { AboutUsComponent } from './components/about-us/about-us.component';
 
 
 @NgModule({
@@ -63,6 +64,7 @@ import { SettingsComponent } from './components/settings/settings.component';
     ContactComponent,
     ResendEmailComponent,
     SettingsComponent,
+    AboutUsComponent,
   ],
   imports: [
     BrowserModule,

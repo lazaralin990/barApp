@@ -1,35 +1,52 @@
-<div class="full">
+    <div class="header">
+      <div class="ihavebar">
+        <mat-icon class="iconProduct love" aria-hidden="false" aria-label="Example home icon">storefront</mat-icon>
+        <a class="text-right establecimiento" routerLink="/login">Tengo un establecimiento</a>
+      </div>
+      </div>
   <div class="body">
-      <li routerLinkActive="active" class="nav-item estLi">
-          <p class="text-muted text-right establecimiento" routerLink="/login">Tengo un establecimiento</p>
-      </li>
+
     <div class="search">
         <div class="logoDiv">
             <img class="logoImage" src="./assets/images/youcartalogo.png">
         </div>
-      <input type="text" placeholder="Escribe el nombre del restaurante..." class="form-control box" [(ngModel)]="searchTerm"/>
+      <input type="text" placeholder="Busca por zona, restaurante, bar..." class="form-control box" [(ngModel)]="searchTerm"/>
 
       <div>
           <ul *ngIf="this.show" class="list-group">
-            <li class="list-group-item results" *ngFor="let user of filteredList">
+            <ng-container *ngFor="let user of filteredList; index as i">
+            <ng-container *ngIf="i < 5">
+              <li class="list-group-item results">
+
             <div class="name" (click)="viewCarta(user.uid)">
+              <div class="imageDiv">
                   <img [src]="user.image" class="profile">
+              </div>
                   <div class="text">
                       <a class="nameUser">{{user.name}}</a>
                       <a class="address">{{user.direccion}}</a>
                   </div>
             </div>
-            </li>
+              </li>
+           </ng-container>
+           <ng-container *ngIf="i === 5">
+             <div class="moreDotsDiv">
+                <mat-icon aria-hidden="false" aria-label="Example home icon">more_horiz</mat-icon>
+             </div>
+           </ng-container>
+          </ng-container>
+
           </ul>
         </div>
     </div>
   </div>
   <div class="footer">
-    <a class="footerText">
-      With
+    <a class="footerText">With
         <mat-icon class="iconProduct love" aria-hidden="false" aria-label="Example home icon">favorite_border</mat-icon>
-      from España &nbsp;</a>
+      from youCarta</a>
+      <br>
+
+      <a class="contactarText" routerLink="/contacto">Contactar&nbsp;&nbsp;</a>
       <a class="contactarText">|</a>
-      <a class="contactarText" routerLink="/contacto">&nbsp;Contactar</a>
+      <a class="contactarText" routerLink="/about">&nbsp;&nbsp;Sobre nosotros</a>
   </div>
-</div>

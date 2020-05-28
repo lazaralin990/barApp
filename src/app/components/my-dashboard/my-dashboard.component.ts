@@ -37,6 +37,7 @@ pictureSelected: Product;
 name: string;
 image: File;
 direccion: string;
+removedPic: boolean;
 
 formProduct = new FormGroup({
   id: new FormControl(''),
@@ -136,6 +137,7 @@ removePic() {
   this.imgSrc = null;
   this.uploadedPic = false;
   this.selectedImage = null;
+  this.removedPic = true;
 }
 
 onSubmit(form, catId, catCat) {
@@ -236,6 +238,9 @@ onSubmitEditProduct(formValue, catId){
             finalize(() => {
               fileRef.getDownloadURL().subscribe((url) => {
                 formValue['image'] = url;
+                if(formValue.description === undefined) {
+                  formValue['description'] = '';
+                }
                 this.product.updateProduct(this.selectedProd, formValue, catId);
                 this.cancelOptionProduct();
                 this.formProduct.reset();

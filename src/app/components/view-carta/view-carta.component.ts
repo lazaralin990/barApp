@@ -21,6 +21,7 @@ export class ViewCartaComponent implements OnInit {
   viewMoreCat: Category[];
   isPictureOpen: boolean;
   pictureSelected: Product;
+  viewCategory: Category[];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -76,6 +77,11 @@ export class ViewCartaComponent implements OnInit {
   makeViewMore(item: any) {
     return this.viewMoreCat === item.category;
   }
+
+  expandedCat(item) {
+    return this.viewCategory = item;
+  }
+
 
   openPicture(prod: any) {
     this.pictureSelected = prod;

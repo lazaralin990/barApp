@@ -94,6 +94,19 @@
   vertical-align: middle;
 }
 
+.expandedCategoryTitle{
+  font-weight: bold;
+  margin-top: 7px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.expandedCategoryDiv{
+ /* border-color: #46C5FC;
+  border-width: 1px;
+  */
+}
+
 .icondotsCategory{
   display: inline-table;
   height: 38px;
@@ -314,4 +327,8 @@ text-align: left;
 .logoImage{
   width: 50px;
   height: 50px;
+}
+
+.footerText{
+  color: lightslategrey;
 }

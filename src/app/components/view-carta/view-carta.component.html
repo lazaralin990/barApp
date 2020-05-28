@@ -22,11 +22,11 @@
       <ng-container *ngFor="let cat of categoryList">
         <ng-container *ngIf="cat.numberProducts !== 0">
 
-      <li class="list-group-item categoryContainer">
+      <li class="list-group-item categoryContainer" [ngClass]="{'noExpandedCategoryDiv':!makeViewMore(cat), 'expandedCategoryDiv':makeViewMore(cat)}">
         <div class="divCategory">
 
           <div class="categoryTitleDiv">
-            <a class="categoryTitle">{{cat.category}}</a>
+            <a [ngClass]="{'categoryTitle':!makeViewMore(cat), 'expandedCategoryTitle':makeViewMore(cat)}">{{cat.category}}</a>
           </div>
       <mat-icon aria-hidden="false" aria-label="Example home icon" class="expand" *ngIf="!makeViewMore(cat)" (click)="selectViewMore(cat)">expand_more</mat-icon>
       <mat-icon aria-hidden="false" aria-label="Example home icon" class="expand" *ngIf="makeViewMore(cat)"  (click)="unselectViewMore()">expand_less</mat-icon>
@@ -87,5 +87,8 @@
   </div>
 </div>
 <div class="footer">
-
+    <a class="footerText">
+      With
+        <mat-icon class="iconProduct love" aria-hidden="false" aria-label="Example home icon">favorite_border</mat-icon>
+      from youCarta</a>
   </div>

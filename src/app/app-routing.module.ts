@@ -1,3 +1,4 @@
+import { AboutUsComponent } from './components/about-us/about-us.component';
 import { ResendEmailComponent } from './components/resend-email/resend-email.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { AuthGuard } from './auth.guard';
@@ -29,7 +30,8 @@ const routes: Routes = [
   {path: 'editar/:id', component: EditProfileComponent, canActivate: [AuthGuard]},
   {path: 'view/:id', component: ViewCartaComponent},
   {path: 'resend', component: ResendEmailComponent, canActivate: [AuthGuard]},
-  {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]}
+  {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
+  {path: 'about', component: AboutUsComponent}
 ];
 
 @NgModule({
