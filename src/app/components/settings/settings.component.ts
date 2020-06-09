@@ -22,7 +22,7 @@ export class SettingsComponent implements OnInit {
   }
 
   onDeleteAccount(){
-    if (confirm('¿Estas seguro de borrar tu cuenta? Todos tus datos y productos creados se perderán para siempre.')) {
+    if (confirm('¿Estas segur@ de borrar tu cuenta? Todos tus datos y productos creados se perderán para siempre.')) {
       this.authService.deleteProfile();
     }
   }

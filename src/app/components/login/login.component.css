@@ -90,3 +90,20 @@
 .backHome{
   cursor: pointer;
 }
+
+.ihavebar{
+  margin-top: 30px;
+  float: right;
+}
+.establecimiento{
+  margin-right: 30px;
+  font-size: 13px;
+  margin-top: 20px;
+  cursor: pointer;
+  color: #419a1c;
+}
+.love{
+  display: inline-table;
+  vertical-align: middle;
+  color: #419a1c;
+}

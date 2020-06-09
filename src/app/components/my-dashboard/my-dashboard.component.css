@@ -132,16 +132,29 @@ font-size: 15px;
 .icondotsCategory{
   display: inline-table;
   height: 38px;
-  width: 10%;
   float: left;
   margin: auto;
   padding: 0px;
+}
+
+.upAndDownDiv{
+  display: inline-table;
+  height: 24px;
+  float: left;
+  margin: auto;
+  padding: 0px;
+  padding-top: 7px;
 }
 
 .dotsCategory{
   display: inline-table;
   margin-left: 5px;
   float: left;
+}
+
+.list-group-item{
+  padding-left: 7px;
+  padding-right: 7px;
 }
 
 .expand{
@@ -321,7 +334,12 @@ height: auto;
     height: 100%;
   }
 
-
+  .expandedCategoryTitle{
+    font-weight: bold;
+    margin-top: 7px;
+    display: inline-block;
+    vertical-align: middle;
+  }
 
 
   .box {
@@ -504,4 +522,17 @@ height: auto;
     float: left;
     font-size: 12px;
     margin-left: 5px;
+  }
+
+  .footer{
+    margin-top: 15%;
+    width: 100%;
+    text-align: center;
+    float: left;
+    position: absolute;
+  }
+
+
+  .footerText{
+    color: lightslategrey;
   }

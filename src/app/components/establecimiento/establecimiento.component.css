@@ -33,6 +33,14 @@
   margin-top: 20px;
 }
 
+.profile{
+  object-fit: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  border-radius: 10%;
+}
+
 .footer{
   margin-top: 20px;
   float: left;

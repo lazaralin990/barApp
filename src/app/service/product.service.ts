@@ -5,6 +5,8 @@ import { User } from './../models/user';
 import { AngularFireList, AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
+import { HttpClient } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +25,8 @@ prodRef: AngularFireObject<Product>;
 
 constructor(
     private database: AngularFireDatabase,
-    private authService: AuthService
+    private authService: AuthService,
+    private httpClient: HttpClient
   ) { }
 
 getAll(){
@@ -47,6 +50,11 @@ getProductsPerCategoryForUser(idPlace, catId ){
   return this.productsPerCat;
 }
 
+getProductsPerCategoryForAuthUser(catId){
+  this.productsPerCat = this.database.list('users/' + this.authService.userId + '/carta/' + catId + '/products/');
+  return this.productsPerCat;
+}
+
 getAllCategories(id){
   this.categoryAll = this.database.list('users/' + id + '/carta');
   return this.categoryAll;
@@ -55,6 +63,10 @@ getAllCategories(id){
 getAllCategoriesForMyRestaurant(){
   this.categoryAll = this.database.list('users/' + this.authService.userId + '/carta');
   return this.categoryAll;
+}
+
+getAllCategoriesForIndex(){
+  return this.httpClient.get('users/' + this.authService.userId + '/carta');
 }
 
 getCat(id){
@@ -69,6 +81,23 @@ updateCat(id, catValue: Category){
     this.errorMgmt(error);
   });
   return;
+}
+
+
+
+updateCatIndex(catId, i) {
+  return this.database.object('users/' + this.authService.userId + '/carta/' + catId).update({
+    order: i
+  });
+ }
+
+
+updateProductIndex(catId, id, i) {
+ return this.database.object('users/' + this.authService.userId + '/carta/' + catId + '/products/' + id).update({
+    order: i
+  }).catch(error =>{
+    this.errorMgmt(error);
+  });
 }
 
 getProduct(id, catId){
@@ -93,7 +122,6 @@ newProduct(data: Product, catId, catCat){
   const product = {
     id: newProduct,
     categoryId: catId,
-    category: catCat,
     title: data.title,
     description: data.description,
     price: data.price,
@@ -108,7 +136,8 @@ newCategory(cat: Category){
   const newCategory = firebase.database().ref().child('users/' + this.authService.userId + '/carta').push().key;
   const categoryStructure = {
     id: newCategory,
-    category: cat.category
+    category: cat.category,
+    order: cat.order
   }
   const updates = {};
   updates['users/' + this.authService.userId + '/carta/' + newCategory] = categoryStructure;
@@ -119,16 +148,18 @@ newCategory(cat: Category){
 
 deleteCategory(id) {
   this.categoryRef = this.database.object('users/' +  this.authService.userId + '/carta/' + id);
-  this.categoryRef.remove()
+  return this.categoryRef.remove()
     .catch(error => {
       console.log(error);
     });
 }
 
 
+
+
 deleteProduct(id, productId) {
   this.productRef = this.database.object('users/' +  this.authService.userId + '/carta/' + id + '/products/' + productId);
-  this.productRef.remove()
+  return this.productRef.remove()
     .catch(error => {
       console.log(error);
     });

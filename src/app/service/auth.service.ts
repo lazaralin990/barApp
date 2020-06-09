@@ -5,7 +5,7 @@ import { database } from 'firebase/app';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 
 @Injectable({
@@ -40,9 +40,17 @@ export class AuthService {
           this.userData = user;
           localStorage.setItem('user', JSON.stringify(this.userData));
           JSON.parse(localStorage.getItem('user'));
+          this.userId = this.userData.uid;
+          this.userEmail = this.userData.email;
+          // console.log(this.userId);
+          // console.log(this.userEmail);
+          // console.log('there is an user');
+          // this.getProfile(this.userId);
+          // this.getProfileForMyDashboard();
         } else {
           localStorage.setItem('user', null);
           JSON.parse(localStorage.getItem('user'));
+          console.log('there is no user');
         }
       });
    }
@@ -75,6 +83,21 @@ export class AuthService {
       });
   }
 
+  setUserData2(user){
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+    const userData: User = {
+      uid: user.uid,
+      email: user.email,
+      direccion: user.direccion,
+      image: user.image,
+      name: user.name,
+      telefono: user.telefono,
+    }
+    console.log(userData);
+    return userRef.set(userData, {
+      merge: true
+    });
+  }
 
   setUserData(result){
     database().ref('users/' + result.user.uid).set({
@@ -142,6 +165,7 @@ export class AuthService {
 
 
   getProfile(id: string) {
+      console.log(id);
       this.profileObj = this.af.object('users/' + id);
       this.profileObj.snapshotChanges().subscribe(action => {
         this.name = action.payload.val().name;
@@ -156,6 +180,7 @@ export class AuthService {
 
 
   getProfileForMyDashboard() {
+    console.log(this.userId);
     this.profileObj = this.af.object('users/' + this.userId);
     return this.profileObj.snapshotChanges();
   }

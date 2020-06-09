@@ -29,7 +29,7 @@
 
         <div class="cartel">
             <p>Sube una foto de tu local para que tus clientes lo reconozcan facilmente(*)</p>
-              <img [src]="imgSrc" width="150px" height="150px" margin-bottom="10px" (click)="fileUploader.click()"  >  <!--  it used to have: (click)="fileUploader.click()" -->
+              <img [src]="imgSrc" class="profile" width="150px" height="150px" margin-bottom="10px" (click)="fileUploader.click()"  >  <!--  it used to have: (click)="fileUploader.click()" -->
               <input type="file" class="form-control" formControlName="image" #fileUploader (change)="showPreview($event)"> <!-- it used to have #fileUploader -->
               <div class="text-danger" *ngIf="isSubmitted && !uploadedPic">Este campo es obligatorio</div>
         </div>

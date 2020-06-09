@@ -251,6 +251,7 @@ text-align: left;
   }
 
   .principioHeader{
+    text-align: center;
     margin-top: 15px;
   }
 
@@ -316,6 +317,19 @@ text-align: left;
   cursor: pointer;
 }
 
+.noContentImage{
+  width: 60px;
+  height: 60px;
+  font-size: 60px;
+  text-align: center;
+  color: lightslategrey;
+}
+
+.noProducts{
+  font-size: 20px;
+  color: lightslategrey;
+}
+
 .footer{
   margin-top: 15%;
   width: 100%;
@@ -324,10 +338,7 @@ text-align: left;
   position: absolute;
 }
 
-.logoImage{
-  width: 50px;
-  height: 50px;
-}
+
 
 .footerText{
   color: lightslategrey;

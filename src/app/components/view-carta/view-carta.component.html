@@ -78,10 +78,21 @@
        </li>
       </ng-container>
       </ng-container>
-       <div class="textPrincipio" *ngIf="!categoryList || categoryList.length === 0">
+       <div [hidden]="this.categoryList">
           <div class="principioHeader">
               <mat-icon aria-hidden="false" aria-label="Example home icon">hourglass_empty</mat-icon>
             </div>
+
+      </div>
+      <div class="textPrincipio" *ngIf="this.categoryList && this.productListPerCat.length === 0" [hidden]="this.productListPerCat.length > 0">
+          <div class="principioHeader">
+
+            <mat-icon class="noContentImage" aria-hidden="false" aria-label="Example home icon">rowing</mat-icon>
+            <br>
+            <a class="noProducts">&nbsp;Vaya...</a>
+            <br>
+            <a class="noProducts">Este establecimiento no ha creado su carta aún. No dudes en avisar el/la camarer@ para que lo sepa :)</a>
+          </div>
 
       </div>
   </div>

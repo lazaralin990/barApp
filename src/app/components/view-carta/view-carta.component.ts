@@ -22,6 +22,10 @@ export class ViewCartaComponent implements OnInit {
   isPictureOpen: boolean;
   pictureSelected: Product;
   viewCategory: Category[];
+  maxI: number;
+  maxIProd: number;
+  noProducts: boolean = false;
+  isLoading: boolean;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -32,30 +36,34 @@ export class ViewCartaComponent implements OnInit {
   ngOnInit() {
   this.activatedRoute.paramMap.subscribe(params => {
     this.barId = params.get('id');
-    if(this.barId){
+    if (this.barId){
       this.getData(this.barId);
-      var z = this.product.getAllCategories(this.barId);
+      const z = this.product.getAllCategories(this.barId);
       z.valueChanges().subscribe(item => {
         this.categoryList = [];
         this.productListPerCat = [];
         item.forEach(element => {
-          var y = element;
+          const y = element;
           y.numberProducts = 0;
-          var v = this.product.getProductsPerCategoryForUser(this.barId, element.id);
-          v.valueChanges().subscribe(item => {
+          const k = this.product.getProductsPerCategoryForUser(this.barId, element.id);
+          k.valueChanges().subscribe(item => {
           item.forEach(elementProd => {
             y.numberProducts += 1;
-            var v = elementProd;
+            const v = elementProd;
             this.productListPerCat.push(v as Product);
+            this.productListPerCat.sort(function(a, b){
+              return a.order - b.order;
+            });
             });
           });
           this.categoryList.push(y as Category);
+          this.categoryList.sort(function(a, b){
+            return a.order - b.order;
+          });
         });
        });
-
     }
-  })
-
+  });
   }
 
   getData(id) {

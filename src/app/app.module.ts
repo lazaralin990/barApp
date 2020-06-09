@@ -27,6 +27,7 @@ import { MatButtonModule, MatDialogModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AuthService } from './service/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
@@ -42,6 +43,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { ResendEmailComponent } from './components/resend-email/resend-email.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
+import { GetQrComponent } from './components/get-qr/get-qr.component';
 
 
 @NgModule({
@@ -65,11 +67,12 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
     ResendEmailComponent,
     SettingsComponent,
     AboutUsComponent,
+    GetQrComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    AppRoutingModule,
     AngularFireAuthModule,
     BrowserAnimationsModule,
     MatIconModule,
@@ -80,7 +83,8 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
     AngularFireStorageModule,
     PopUpModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    HttpClientModule
   ],
   providers: [
     AuthGuard,
@@ -89,6 +93,6 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
   ],
 
   bootstrap: [AppComponent],
-  entryComponents: [DialogTcComponent]
+  entryComponents: [DialogTcComponent, GetQrComponent]
 })
 export class AppModule { }

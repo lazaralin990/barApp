@@ -4,10 +4,9 @@ import { Product } from './../../models/product';
 import { ProductService } from './../../service/product.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from './../../service/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
-
 
 @Component({
   selector: 'app-my-dashboard',
@@ -30,6 +29,7 @@ editingProd: boolean;
 popUpOpen: boolean;
 popUpOpenProduct: boolean;
 categoryList: Category[];
+indexCategoryList: Category[];
 selectedCat: string;
 selectedProd: string;
 isPictureOpen: boolean;
@@ -38,6 +38,9 @@ name: string;
 image: File;
 direccion: string;
 removedPic: boolean;
+maxI: number;
+maxIProd: number;
+loading: boolean;
 
 formProduct = new FormGroup({
   id: new FormControl(''),
@@ -50,6 +53,7 @@ formProduct = new FormGroup({
 
 formCat = new FormGroup({
   category: new FormControl('', Validators.required),
+  order: new FormControl('')
 });
 
 openPopUp() {
@@ -62,7 +66,6 @@ cancelOption() {
   this.formCat.reset();
   this.formProduct.reset();
 }
-
 
 openPopUpProduct(cat) {
   this.popUpOpenProduct = true;
@@ -87,23 +90,25 @@ cancelOptionProduct() {
 
   ngOnInit() {
     this.getData();
-    const z = this.product.getAllCategoriesForMyRestaurant();
-    z.valueChanges().subscribe(item => {
+    this.product.getAllCategoriesForMyRestaurant().valueChanges().subscribe(item => {
       this.categoryList = [];
-      this.productListPerCat = [];
+      this.loading = true;
+      this.maxI = 0;
       item.forEach(element => {
-        const y = element;
-        this.categoryList.push(y as Category);
-        const v = this.product.getProductsPerCategory(element.id);
-        v.valueChanges().subscribe(item => {
-        item.forEach(elementProd => {
-          const v = elementProd;
-          this.productListPerCat.push(v as Product);
-          });
+        this.categoryList.push(element as Category);
+        this.categoryList.sort(function(a, b) {
+          return a.order - b.order;
         });
+        if (element.order === undefined) {
+          this.product.updateCatIndex(element.id, this.maxI).then(res => {
+            return;
+        });
+        }
+        this.maxI += 1;
       });
+      this.loading = false;
     });
-}
+  }
 
 clickNuevaCat() {
   this.nuevaCat = true;
@@ -119,7 +124,7 @@ getData() {
 }
 
 showPreview(event){
-  if (event.target.files && event.target.files[0]){
+  if (event.target.files && event.target.files[0]) {
     const reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onload = (e: any) => {
@@ -150,6 +155,7 @@ onSubmit(form, catId, catCat) {
       finalize(() => {
         fileRef.getDownloadURL().subscribe((url) => {
           form['image'] = url;
+          form['order'] = this.maxIProd;
           this.product.newProduct(form, catId, catCat);
           this.formProduct.reset();
           this.isSubmitted = false;
@@ -160,6 +166,7 @@ onSubmit(form, catId, catCat) {
       })
     ).subscribe();
   } else {
+    form['order'] = this.maxIProd;
     this.product.newProduct(form, catId, catCat);
     this.formProduct.reset();
     this.isSubmitted = false;
@@ -170,12 +177,67 @@ onSubmit(form, catId, catCat) {
 }
 
 onSubmitCat(formCat) {
+  formCat['order'] = this.maxI;
+  console.log(formCat.order);
   this.product.newCategory(formCat);
   this.cancelOption();
 }
 
-onDeleteCat(id) {
-  this.product.deleteCategory(id);
+onDeleteCat(id, i) {
+  if(confirm('¿Estas segur@ de borrar la categoría?')){
+        if(i === this.maxI - 1) {
+          this.product.deleteCategory(id).then(res => {
+            return;
+          });
+        } else {
+          this.product.deleteCategory(id).then(res => {
+            this.updateIndexCategories(i);
+          });
+        }
+  }
+}
+
+updateIndexCategories(i) {
+  const z = this.product.getAllCategoriesForMyRestaurant().valueChanges().subscribe(item => {
+  this.categoryList = [];
+  item.forEach(element => {
+    if (element.order > i) {
+      this.product.updateCatIndex(element.id, element.order - 1).then(res => {
+        return;
+      });
+    } else {
+      return;
+    }
+  });
+  z.unsubscribe();
+});
+}
+
+updateIndexProduct(catId, i) {
+  const z = this.product.getProductsPerCategoryForAuthUser(catId).valueChanges().subscribe(prod => {
+  this.categoryList = [];
+  prod.forEach(element => {
+    if (element.order > i) {
+      this.product.updateProductIndex(catId, element.id, element.order - 1).then(res => {
+        return;
+      });
+    }
+  });
+  z.unsubscribe();
+});
+}
+
+
+onChangingOrder(id1, id2, i1, i2) {
+  this.product.updateCatIndex(id1.id, i2).then(res => {
+    this.product.updateCatIndex(id2.id, i1);
+  });
+}
+
+onChangingOrderProduct(cat, prod1, i1, prod2, i2) {
+  this.product.updateProductIndex(cat.id, prod1.id, i2).then(res => {
+    this.product.updateProductIndex(cat.id, prod2.id, i1);
+  });
 }
 
 onEditCat(id) {
@@ -218,20 +280,25 @@ onEditProduct(id, catId, cat) {
 onSubmitEditProduct(formValue, catId){
 
   if (this.oldImage === this.imgSrc) {
-
-      console.log('imgSrc is igula to OldImage');
       formValue.image = this.imgSrc;
+      if(formValue.image === undefined) {
+        formValue['image'] = '';
+      }
+      if(formValue.description === undefined) {
+        formValue['description'] = '';
+      }
       this.product.updateProduct(this.selectedProd, formValue, catId);
       this.cancelOptionProduct();
       this.formProduct.reset();
-      }   else if(this.imgSrc === null) {
-          console.log('imgSrc is null');
-          formValue.image = '';
+      } else if(this.imgSrc === null) {
+          formValue['image'] = '';
+          if(formValue.description === undefined) {
+            formValue['description'] = '';
+          }
           this.product.updateProduct(this.selectedProd, formValue, catId);
           this.cancelOptionProduct();
           this.formProduct.reset();
-  } else {
-          console.log('is going through else');
+    } else {
           const filePath = `${this.selectedImage.name.split('.').slice(0,-1).join('.')}_${new Date().getTime()}`;
           const fileRef = this.storage.ref(filePath);
           this.storage.upload(filePath, this.selectedImage).snapshotChanges().pipe(
@@ -240,6 +307,9 @@ onSubmitEditProduct(formValue, catId){
                 formValue['image'] = url;
                 if(formValue.description === undefined) {
                   formValue['description'] = '';
+                }
+                if(formValue.image === undefined) {
+                  formValue['image'] = '';
                 }
                 this.product.updateProduct(this.selectedProd, formValue, catId);
                 this.cancelOptionProduct();
@@ -250,9 +320,17 @@ onSubmitEditProduct(formValue, catId){
   }
 }
 
-onDeleteProduct(id, productId){
-  if(confirm('¿Estas seguro de borrar el producto?')){
-    this.product.deleteProduct(id, productId);
+onDeleteProduct(catId, productId, i){
+  if(confirm('¿Estas segur@ de borrar el producto?')){
+    if (i === this.maxIProd - 1){
+      this.product.deleteProduct(catId, productId).then(res => {
+      return;
+      });
+    } else {
+      this.product.deleteProduct(catId, productId).then(res => {
+        this.updateIndexProduct(catId, i);
+      });
+    }
   }
 }
 
@@ -263,10 +341,26 @@ onSignOut(){
 
 
 selectViewMore(item, catId){
+  this.product.getProductsPerCategoryForAuthUser(catId).valueChanges().subscribe(prod => {
+    this.productListPerCat = [];
+    this.maxIProd = 0;
+    prod.forEach((elementProd) => {
+        this.productListPerCat.push(elementProd as Product);
+        this.productListPerCat.sort(function(a, b) {
+          return a.order - b.order;
+        });
+        if (elementProd.order === undefined){
+          this.product.updateProductIndex(catId, elementProd.id, this.maxIProd).then(res => {
+        });
+        }
+        this.maxIProd += 1;
+    });
+ });
   this.viewMoreCat = item.category;
 }
 
 unselectViewMore(item){
+  this.productListPerCat = [];
   this.viewMoreCat = null;
 }
 

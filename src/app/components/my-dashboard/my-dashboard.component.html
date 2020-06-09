@@ -23,7 +23,6 @@
     </div>
   </div>
 
-
   <!-- New Category  -->
  <form [formGroup] = "formCat">
     <div class="create">
@@ -41,6 +40,7 @@
           <mat-icon aria-hidden="false" aria-label="Example home icon" class="salir" (click)="cancelOption()">clear</mat-icon>
             <div class="newCategory">
               <input type="text" required class="form-control formPopUp" formControlName="category" placeholder="Nueva categoría (*)">
+              <input type="hidden" formControlName="order">
               <input type="button" *ngIf="!editingCat" [disabled]="!formCat.valid" class="btn btn-success buttonPopUp" value="Guardar" (click)="onSubmitCat(formCat.value)">
               <input type="button" *ngIf="editingCat" [disabled]="!formCat.valid" class="btn btn-success buttonPopUp" value="Guardar Cambios" (click)="onSubmitEditCat(formCat.value)">
             </div>
@@ -60,7 +60,7 @@
   <!-- All Categories  -->
 
       <div class="categoriesAll">
-    <li class="list-group-item" *ngFor="let cat of categoryList">
+    <li class="list-group-item" *ngFor="let cat of categoryList; index as i">
       <div class="divCategory">
         <div class="icondotsCategory">
             <div ngbDropdown class="d-inline-block">
@@ -68,13 +68,21 @@
                     <mat-icon aria-hidden="false" aria-label="Example home icon" class="dotsCategory">more_vert</mat-icon>
                   </button>
                 <div class="dropdown-menu optionsDiv" aria-labelledby="dropdownMenuButton">
+
+                  <a class="dropdown-item" *ngIf="i > 0" (click)="onChangingOrder(cat, categoryList[i-1], i, i-1)">&uarr; Subir</a>
+                  <a class="dropdown-item" *ngIf="i < maxI-1" (click)="onChangingOrder(cat, categoryList[i+1], i, i+1)">&darr; Bajar</a>
                   <a class="dropdown-item" (click)="onEditCat(cat.id)">Editar</a>
-                  <a class="dropdown-item" (click)="onDeleteCat(cat.id)">Eliminar</a>
+                  <a class="dropdown-item" (click)="onDeleteCat(cat.id, cat.order)">Eliminar</a>
                 </div>
               </div>
         </div>
+       <!-- <div class="upAndDownDiv">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" *ngIf="i > 0" (click)="onChangingOrder(cat, categoryList[i-1], i, i-1)">arrow_upward</mat-icon>
+            <mat-icon aria-hidden="false" aria-label="Example home icon" *ngIf="i < maxI-1" (click)="onChangingOrder(cat, categoryList[i+1], i, i+1)">arrow_downward</mat-icon>
+        </div>
+       -->
         <div class="categoryTitleDiv">
-          <a class="categoryTitle">{{cat.category}}</a>
+            <a [ngClass]="{'categoryTitle':!makeViewMore(cat), 'expandedCategoryTitle':makeViewMore(cat)}">{{cat.category}}</a>
         </div>
     <mat-icon aria-hidden="false" aria-label="Example home icon" class="expand" *ngIf="!makeViewMore(cat)" (click)="selectViewMore(cat, cat.id)">expand_more</mat-icon>
     <mat-icon aria-hidden="false" aria-label="Example home icon" class="expand" *ngIf="makeViewMore(cat)"  (click)="unselectViewMore(cat)">expand_less</mat-icon>
@@ -88,7 +96,7 @@
       </div>
       <div class="expanded" *ngIf="makeViewMore(cat)">
 
-          <ng-container class="list-group-item" *ngFor="let prod of productListPerCat">
+          <ng-container class="list-group-item" *ngFor="let prod of productListPerCat; index as i">
             <ng-container *ngIf="prod.categoryId === cat.id">
               <li class="list-group-item">
                 <div class="divProducts">
@@ -112,10 +120,12 @@
                         <div ngbDropdown class="d-inline-block">
                             <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  <mat-icon aria-hidden="false" aria-label="Example home icon" class="dots">more_vert</mat-icon></button>
                             <div class="dropdown-menu optionsDiv" aria-labelledby="dropdownMenuButton">
+                              <a class="dropdown-item" *ngIf="i > 0" (click)="onChangingOrderProduct(cat, prod, i, productListPerCat[i-1], i-1)">&uarr; Subir</a>
+                            <a class="dropdown-item" *ngIf="i < maxIProd-1" (click)="onChangingOrderProduct(cat, prod, i, productListPerCat[i+1], i+1)">&darr; Bajar</a>
                               <a class="dropdown-item" (click)="onEditProduct(prod.id, cat.id, cat)">Editar</a>
-                              <a class="dropdown-item" (click)="onDeleteProduct(cat.id, prod.id)">Eliminar</a>
+                              <a class="dropdown-item" (click)="onDeleteProduct(cat.id, prod.id, prod.order)">Eliminar</a>
                             </div>
-                          </div>
+                        </div>
                     </div>
                 </div>
               </li>
@@ -170,7 +180,13 @@
 
 
      </li>
-     <div class="textPrincipio" *ngIf="!categoryList || categoryList.length === 0">
+     <div class="textPrincipio" *ngIf="loading">
+        <div class="principioHeader">
+            <mat-icon aria-hidden="false" aria-label="Example home icon">hourglass_empty</mat-icon>
+          </div>
+    </div>
+
+      <div class="textPrincipio" *ngIf="this.categoryList && this.categoryList.length === 0">
         <div class="principioHeader">
           <p>¿List@ para empezar? en 2 min tendrás tu carta en la nube</p>
         </div>
@@ -184,12 +200,14 @@
 
           <p>Tu carta online está lista!</p>
         </div>
-        <div class="principioFooter">
-          <p>Ten en cuenta que el cliente verá el menu de la misma forma que tú lo ves y en el mismo orden.
-          </p>
-        </div>
     </div>
 
  </div>
 </div>
 </div>
+<div class="footer">
+    <a class="footerText">
+      With
+        <mat-icon class="iconProduct love" aria-hidden="false" aria-label="Example home icon">favorite_border</mat-icon>
+      from youCarta</a>
+  </div>

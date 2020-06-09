@@ -41,8 +41,8 @@ openDialog(){
     width: 'auto',
     height: 'auto'
   });
-
 }
+
 get formsControls(){
   return this.userSignUp['controls'];
 }
